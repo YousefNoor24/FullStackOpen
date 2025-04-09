@@ -9,7 +9,7 @@ const Part = (props) => {
   return (
     <>
       <p>
-        {props.content.part} {props.content.exercises}
+        {props.content.name} {props.content.exercises}
       </p>
     </>
   )
