@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+const HeaderTwo = ({text}) => <h2>{text}</h2>
+const Display = ({text}) => <div>{text}</div>
+const Button = ({onClick, text}) => <button onClick={onClick}>{text}</button>
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -11,12 +15,36 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+  
   const [selected, setSelected] = useState(0)
+
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
+
+  const handleSelectedClick = () => {
+    const randomNumber = Math.floor(Math.random() * anecdotes.length)
+    setSelected(randomNumber)
+  } 
+
+  const handleVoteClick = () => {
+    const copy = [...votes]
+    copy[selected]+= 1
+    setVotes(copy)
+  }
+
+  const voteMax = votes.indexOf(Math.max(...votes))
+  const voteText = 'has ' + votes[selected] + ' votes'
+  const voteTextMax = 'has ' + votes[voteMax] + ' votes'
 
   return (
     <div>
-      {anecdotes[selected]}
+      <HeaderTwo text='Anecdote of the day'/>
+      <Display text={anecdotes[selected]}/>
+      <Display text={voteText}/>
+      <Button onClick={handleVoteClick} text='vote'/>
+      <Button onClick={handleSelectedClick} text='next anecdote'/>
+      <HeaderTwo text='Anecdote with the most votes'/>
+      <Display text={anecdotes[voteMax]} />
+      <Display text={voteTextMax} />
     </div>
   )
 }
