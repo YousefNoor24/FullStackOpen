@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,7 +12,7 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [newFilter, setNewFilter] = useState([])
+  const [newFilter, setNewFilter] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -35,30 +38,32 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const filterPersons = (event) => {
-    setNewFilter(persons.filter(person => person.name.toLowerCase().trim().includes(event.target.value.toLowerCase().trim())))
+  const handleChangeFilter = (event) => {
+    setNewFilter(event.target.value)
   }
+
+  const filteredPersons = () => {
+    return persons.filter((person) =>
+      person.name.toLowerCase().includes(newFilter.toLowerCase().trim())
+    );
+  };
+
+  const showPersons = newFilter.trim().length === 0 ? persons : filteredPersons();
+
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={filterPersons}/>
-      </div>
-      <form onSubmit={addPerson}>
-        <h2>add a new</h2>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filterValue={newFilter} handleChangeFilter={handleChangeFilter}/>
+      <h3>Add a new</h3>
+      <PersonForm handleSubmit={addPerson} 
+        valueName={newName} 
+        handleNameChange={handleNameChange} 
+        valueNumber={newNumber} 
+        handleNumberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      {newFilter.map(person => <div key={person.id}>{person.name} {person.number}</div>)}
+      <Persons array={showPersons}/>
     </div>
   )
 }
