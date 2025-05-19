@@ -1,0 +1,20 @@
+h2 {
+    color: green;
+}
+
+.notice, .error {
+    background: lightgray;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.notice {
+    color: green;
+}
+
+.error {
+    color: red;
+}
