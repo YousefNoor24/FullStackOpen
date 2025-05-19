@@ -34,8 +34,6 @@ const App = () => {
               setNewName('')
               setNewNumber('')
             })
-      } else {
-          return alert(`${newName} is already added to phonebook`)
       }
     } else {
       const nameObject = {
