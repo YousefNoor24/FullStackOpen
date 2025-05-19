@@ -1,9 +1,10 @@
-const Persons = ({array}) => {
+const Persons = ({array, deletePerson}) => {
     return (
         <div>
             {array.map((element) => (
                 <div key={element.id}>
-                    {element.name} {element.number}
+                    <span>{element.name} {element.number}</span>
+                    <button onClick={() => deletePerson(element.id)}>Delete</button>
                 </div>
             ))}
         </div>
