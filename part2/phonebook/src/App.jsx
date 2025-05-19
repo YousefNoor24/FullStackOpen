@@ -23,20 +23,50 @@ const App = () => {
     event.preventDefault()
 
     const isNameDuplicate = persons.find(person => person.name === newName.trim())
-    if (isNameDuplicate) return alert(`${newName} is already added to phonebook`)
 
-    const nameObject = {
-      name: newName.trim(),
-      number: newNumber.trim(),
+    if (isNameDuplicate) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with new one?`)){
+        const changePerson = {...isNameDuplicate, number: newNumber}
+          personService
+            .update(isNameDuplicate.id, changePerson)
+            .then(returnedPerson => {
+              setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
+              setNewName('')
+              setNewNumber('')
+            })
+      } else {
+          return alert(`${newName} is already added to phonebook`)
+      }
+    } else {
+      const nameObject = {
+        name: newName.trim(),
+        number: newNumber.trim(),
+      }
+
+      personService
+        .create(nameObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+      }
+  }
+
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+
+    if(window.confirm(`Do you want ${person.name}`)) {
+      personService
+        .remove(id)
+        .then(() => setPersons(persons.filter(p => p.id !== id)))
+        .catch(error => {
+          console.log(`${person.name} does not exist`)
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    } else {
+      console.log(`${person.name} is not deleted`)
     }
-
-    personService
-      .create(nameObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')
-      })
   }
 
   const handleNameChange = (event) => {
@@ -72,7 +102,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons array={showPersons}/>
+      <Persons array={showPersons} deletePerson={deletePerson}/>
     </div>
   )
 }
