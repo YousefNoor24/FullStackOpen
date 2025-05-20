@@ -15,7 +15,7 @@ const Country = ({country}) => {
             ))}
         </ul>
         <img src={country.flags.png} />
-        <Weather />
+        <Weather name={country.capital[0]} latitude={country.latlng[0]} longitude={country.latlng[1]}/>
         </div>
     )
 }
