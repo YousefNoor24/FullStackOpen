@@ -14,12 +14,13 @@ const App = () => {
       })
   }, [])
 
-  const Countries = ({countries}) => {
+  const Countries = ({ countries, selectCountry }) => {
     return (
       <div>
         {countries.map(country => (
           <div key={country.name.common}>
-            {country.name.common}
+            <span>{country.name.common}</span>
+            <button onClick={() => selectCountry(country)}>Show</button>
           </div>
         ))}
       </div>
@@ -28,7 +29,7 @@ const App = () => {
 
   const Country = ({country}) => {
     const keyLanguages = Object.keys(country.languages)
-    console.log(keyLanguages)
+
     return (
       <div>
         <h2>{country.name.common}</h2>
@@ -45,7 +46,7 @@ const App = () => {
     )
   }
 
-  const Content = ({array}) => {
+  const Content = ({array, selectCountry}) => {
     if (array.length > 10) {
       return (
         <div>Too many matches,specify another filter</div>
@@ -54,7 +55,7 @@ const App = () => {
 
     if (array.length > 1 && array.length <= 10) {
       return (
-        <Countries countries={array} />
+        <Countries countries={array} selectCountry={selectCountry}/>
       )
     }
 
@@ -83,11 +84,15 @@ const App = () => {
   }
 
   const showCountries = newFilter.trim().length === 0 ? countries : filteredCountries();
+  const selectCountry = (country) => {
+    console.log(country.name.common)
+    setNewFilter(country.name.common)
+  }
 
   return (
     <div>
       <Filter filterValue={newFilter} handleChangeFilter={handleChangeFilter}/>
-      <Content array={showCountries} />
+      <Content array={showCountries} selectCountry={selectCountry} />
     </div>
   )
 }
