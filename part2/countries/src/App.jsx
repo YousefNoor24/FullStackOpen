@@ -28,7 +28,6 @@ const App = () => {
   const showCountries = newFilter.trim().length === 0 ? countries : filteredCountries();
 
   const selectCountry = (country) => {
-    console.log(country.name.common)
     setNewFilter(country.name.common)
   }
 
