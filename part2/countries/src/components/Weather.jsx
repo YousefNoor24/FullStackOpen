@@ -3,7 +3,7 @@ import weatherService from "../services/weather"
 
 const Weather = ({name, latitude, longitude}) => {
     const [weather, setWeather] = useState(null)
-    console.log(name, latitude, longitude)
+    
     useEffect(() => {
         weatherService
             .getWeather(latitude, longitude)
@@ -13,7 +13,7 @@ const Weather = ({name, latitude, longitude}) => {
     }, [])
 
     if (weather === null) return null
-    console.log(weather.list[0].weather[0].icon)
+
     return (
         <div>
             <h2>Weather in {name}</h2>
